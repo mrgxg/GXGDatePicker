@@ -1,0 +1,6 @@
+framework module GXGDatePicker {
+  umbrella header "GXGDatePicker-umbrella.h"
+
+  export *
+  module * { export * }
+}

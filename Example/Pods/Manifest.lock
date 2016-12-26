@@ -1,0 +1,16 @@
+PODS:
+  - GXGDatePicker (0.1.0)
+
+DEPENDENCIES:
+  - GXGDatePicker (from `../`)
+
+EXTERNAL SOURCES:
+  GXGDatePicker:
+    :path: ../
+
+SPEC CHECKSUMS:
+  GXGDatePicker: 98e27f33f4b69d289e8468ebb67e169c754a7c1e
+
+PODFILE CHECKSUM: 4723a87f0431af8345f6388125dc2b303d79d45d
+
+COCOAPODS: 1.2.0.beta.1

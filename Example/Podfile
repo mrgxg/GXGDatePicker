@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'GXGDatePicker_Example' do
+  pod 'GXGDatePicker', :path => '../'
+
+  target 'GXGDatePicker_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
