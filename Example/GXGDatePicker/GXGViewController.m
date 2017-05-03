@@ -22,10 +22,10 @@
 }
 - (IBAction)startAction:(UIButton *)sender {
     GXGDatePicker *picker = [[GXGDatePicker alloc] init];
-    picker.datePickerMode = GXGDatePickerModeHourMinute;
-//    picker.isShowAsCycle = YES;
-    picker.maximumDate = [[NSDate date] dateByAddingTimeInterval:5*60*60];
-    picker.minimumDate = [[NSDate date] dateByAddingTimeInterval:-3*60*60];
+    picker.datePickerMode = 0;
+    picker.isShowAsCycle = YES;
+//    picker.maximumDate = [[NSDate date] dateByAddingTimeInterval:5*60*60];
+//    picker.minimumDate = [[NSDate date] dateByAddingTimeInterval:-3*60*60];
     picker.mCurrentDate = [NSDate date];
 //    picker.timeZone = [NSTimeZone systemTimeZone];
     [picker showDatePicker:^(NSDate * _Nullable selectedDate) {

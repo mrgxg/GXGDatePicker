@@ -9,6 +9,8 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+![image](https://github.com/mrgxg/GXGDatePicker/gxgdatepicker.gif) 
+
 ## Requirements
 
 ## Installation
@@ -32,7 +34,7 @@ GXGDatePicker *picker = [[GXGDatePicker alloc] init];
 
 ## Author
 
-mrgxg, gxg0619@163.com
+mrgxg, gxg0619@gmail.com
 
 ## License
 

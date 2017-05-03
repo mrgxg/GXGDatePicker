@@ -1,10 +1,10 @@
 Pod::Spec.new do |s|
   s.name             = 'GXGDatePicker'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'A simple DatePicker'
 
   s.description      = <<-DESC
-        简单的日期选择器
+     一款简洁、简单的日期选择器， 相比系统自带的UIDatePicker，可以屏蔽掉时间返回以外的不显示，可以循环显示
                        DESC
 
   s.homepage         = 'https://github.com/mrgxg/GXGDatePicker'

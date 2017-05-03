@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, GXGDatePickerMode) {
 
 
 @property (nonatomic, assign) BOOL isShowAsCycle;                       //是否循环显示
-@property (nonatomic, assign) BOOL hiddenNavigationBar;                 //是否遮挡navigationBar 只有添加到window下面的时候才生效  note: 如果没有navbar 也会留64的距离
+@property (nonatomic, assign) BOOL hiddenNavigationBar;                 //是否遮挡navigationBar
 
 @property (nonatomic, strong) UIColor *datePickerTextColor;             //文字颜色
 @property (nonatomic, strong) UIFont *datePickerTextFont;               //文字字体

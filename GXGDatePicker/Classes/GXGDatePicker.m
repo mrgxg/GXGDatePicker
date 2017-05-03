@@ -134,7 +134,6 @@ NSInteger const MW_ToolBarHeight = 40;
 - (void)initDateDatas{
 
     //初始化默认数据
-//    self.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
     
     self.timeZone = [NSTimeZone systemTimeZone];
     
@@ -147,7 +146,6 @@ NSInteger const MW_ToolBarHeight = 40;
     
     self.mMinHour = 1;
     self.mMinMinute = 1;
-    
     
     self.mMinDateHour = 1;
     self.mMinDateMinute = 1;
@@ -218,10 +216,10 @@ NSInteger const MW_ToolBarHeight = 40;
         self.targetView = [self getKeyWindow];
         CGFloat screenHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
         CGFloat originY = 0;
-        if (!self.hiddenNavigationBar) {
+        if (!self.hiddenNavigationBar && [GXGDatePicker gxg_currentViewController].navigationController) {
             originY = 64;
         }
-       [self setFrame:CGRectMake(0, originY, CGRectGetWidth([UIScreen mainScreen].bounds), screenHeight-64)];
+       [self setFrame:CGRectMake(0, originY, CGRectGetWidth([UIScreen mainScreen].bounds), screenHeight-originY)];
     }
     
     [self.targetView addSubview:self];
@@ -250,9 +248,15 @@ NSInteger const MW_ToolBarHeight = 40;
 
 - (void)dissmissDatePicker{
     
-    [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds)-64-MW_ToolBarHeight-MW_DatePickerHeight, CGRectGetWidth([UIScreen mainScreen].bounds),MW_DatePickerHeight+MW_ToolBarHeight)];
+    CGFloat originY = 0;
+    if (!self.hiddenNavigationBar && [GXGDatePicker gxg_currentViewController].navigationController) {
+        originY = 64;
+    }
+
+    
+    [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds)-originY-MW_ToolBarHeight-MW_DatePickerHeight, CGRectGetWidth([UIScreen mainScreen].bounds),MW_DatePickerHeight+MW_ToolBarHeight)];
     [UIView animateWithDuration:0.25 animations:^{
-       [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds)-64, CGRectGetWidth([UIScreen mainScreen].bounds),MW_DatePickerHeight+MW_ToolBarHeight)];
+       [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds) - originY, CGRectGetWidth([UIScreen mainScreen].bounds),MW_DatePickerHeight+MW_ToolBarHeight)];
         self.alpha = 0;
     } completion:^(BOOL finished) {
         
@@ -906,6 +910,41 @@ NSInteger const MW_ToolBarHeight = 40;
     [_mContenView layoutIfNeeded];
    
     return _mContenView;
+}
+
+
++ (UIViewController *)gxg_findCurrentViewController:(UIViewController *)vc{
+    if (vc.presentedViewController) {
+        return [self gxg_findCurrentViewController:vc.presentedViewController];
+    } else if ([vc isKindOfClass:[UISplitViewController class]]){
+        UISplitViewController *sVc = (UISplitViewController *)vc;
+        if (sVc.viewControllers.count > 0) {
+            return [self gxg_findCurrentViewController:sVc.viewControllers.lastObject];
+        } else{
+            return vc;
+        }
+    } else if ([vc isKindOfClass:[UINavigationController class]]){
+        UINavigationController *nav = (UINavigationController *)vc;
+        if (nav.viewControllers.count > 0) {
+            return [self gxg_findCurrentViewController:nav.topViewController];
+        } else{
+            return vc;
+        }
+    } else if ([vc isKindOfClass:[UITabBarController class]]){
+        UITabBarController *tab = (UITabBarController *)vc;
+        if (tab.viewControllers.count > 0) {
+            return  [self gxg_findCurrentViewController:tab.selectedViewController];
+        } else{
+            return vc;
+        }
+    } else{
+        return vc;
+    }
+}
+
++ (UIViewController *)gxg_currentViewController{
+    UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    return [self gxg_findCurrentViewController:viewController];
 }
 
 
