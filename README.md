@@ -9,7 +9,7 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-![image](https://github.com/mrgxg/GXGDatePicker/gxgdatepicker.gif) 
+![image](https://github.com/mrgxg/GXGDatePicker/blob/master/gxgdatepicker.gif) 
 
 ## Requirements
 
