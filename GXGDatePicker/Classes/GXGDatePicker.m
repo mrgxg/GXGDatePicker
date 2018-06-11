@@ -118,6 +118,8 @@ NSInteger const MW_ToolBarHeight = 40;
 
 @property (nonatomic, strong) UIView *targetView;
 
+@property (nonatomic, strong) NSLayoutConstraint *pickerBottomConstaint;
+
 @end
 @implementation GXGDatePicker
 
@@ -191,9 +193,16 @@ NSInteger const MW_ToolBarHeight = 40;
 
 - (void)initUI{
     [self setBackgroundColor:[UIColor gxg_colorWithHex:@"#000000" alpha:0.1]];
-    [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds)-64, CGRectGetWidth([UIScreen mainScreen].bounds),MW_DatePickerHeight+MW_ToolBarHeight)];
     [self addSubview:self.mContenView];
 
+    NSArray *contentHConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[content]-0-|" options:0 metrics:@{} views:@{@"content":self.mContenView}];
+    [self addConstraints:contentHConstraints];
+    
+    NSLayoutConstraint *bottomConstraint = [NSLayoutConstraint constraintWithItem:_mContenView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+    _pickerBottomConstaint = bottomConstraint;
+    [self addConstraint:bottomConstraint];
+    [self.mContenView addConstraint:[NSLayoutConstraint constraintWithItem:_mContenView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:MW_DatePickerHeight+MW_ToolBarHeight]];
+    
     [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)]];
     
     self.mCurrentDate = [[NSDate date] dateWithTimeZone:self.timeZone];
@@ -209,29 +218,66 @@ NSInteger const MW_ToolBarHeight = 40;
     
     self.selectHandler = selectHandler;
     
+    
+    
+    
     if (targetView && !self.hiddenNavigationBar) {
         self.targetView = targetView;
-        [self setFrame:CGRectMake(0, 0,CGRectGetWidth(self.targetView.frame),CGRectGetHeight(self.targetView.frame))];
+        [self.targetView addSubview:self];
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        if (@available(iOS 11.0, *)) {
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.targetView.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.targetView.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+            
+        } else {
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.targetView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.targetView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+        }
+        
     }else{
         self.targetView = [self getKeyWindow];
-        CGFloat screenHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
+        [self.targetView addSubview:self];
+        self.translatesAutoresizingMaskIntoConstraints = NO;
         CGFloat originY = 0;
         if (!self.hiddenNavigationBar && [GXGDatePicker gxg_currentViewController].navigationController) {
-            originY = 64;
+            if ([GXGDatePicker isIphoneX]) {
+                originY = 88;
+            }else{
+                originY = 64;
+            }
         }
-       [self setFrame:CGRectMake(0, originY, CGRectGetWidth([UIScreen mainScreen].bounds), screenHeight-originY)];
+        
+        
+        
+        if (@available(iOS 11.0, *)) {
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.targetView.safeAreaLayoutGuide attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.targetView.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:originY]];
+            
+        } else {
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.targetView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+            [self.targetView addConstraint:[NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.targetView attribute:NSLayoutAttributeTop multiplier:1 constant:originY]];
+        }
     }
     
-    [self.targetView addSubview:self];
+    NSArray *viewHConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[view]-0-|" options:0 metrics:@{} views:@{@"view":self}];
+    
+    [self.targetView addConstraints:viewHConstraints];
+    
+    [self.targetView layoutIfNeeded];
+    
+    
     self.alpha = 0;
     
-    [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight(self.frame), CGRectGetWidth(self.targetView.frame),MW_DatePickerHeight+MW_ToolBarHeight)];
+    
+    _pickerBottomConstaint.constant = 0;
     
     [UIView animateWithDuration:0.1 animations:^{
         self.alpha = 1;
     } completion:^(BOOL finished) {
+        _pickerBottomConstaint.constant = -(MW_DatePickerHeight+MW_ToolBarHeight);
         [UIView animateWithDuration:0.25 animations:^{
-            [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight(self.frame)-MW_ToolBarHeight-MW_DatePickerHeight, CGRectGetWidth(self.frame),MW_DatePickerHeight+MW_ToolBarHeight)];
+            [self.mContenView layoutIfNeeded];
         }];
     }];
 
@@ -248,15 +294,9 @@ NSInteger const MW_ToolBarHeight = 40;
 
 - (void)dissmissDatePicker{
     
-    CGFloat originY = 0;
-    if (!self.hiddenNavigationBar && [GXGDatePicker gxg_currentViewController].navigationController) {
-        originY = 64;
-    }
-
-    
-    [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds)-originY-MW_ToolBarHeight-MW_DatePickerHeight, CGRectGetWidth([UIScreen mainScreen].bounds),MW_DatePickerHeight+MW_ToolBarHeight)];
+    self.pickerBottomConstaint.constant = 0;
     [UIView animateWithDuration:0.25 animations:^{
-       [self.mContenView  setFrame:CGRectMake(0, CGRectGetHeight([UIScreen mainScreen].bounds) - originY, CGRectGetWidth([UIScreen mainScreen].bounds),MW_DatePickerHeight+MW_ToolBarHeight)];
+        [self.mContenView layoutIfNeeded];
         self.alpha = 0;
     } completion:^(BOOL finished) {
         
@@ -901,11 +941,12 @@ NSInteger const MW_ToolBarHeight = 40;
         
         self.mToolBar.translatesAutoresizingMaskIntoConstraints = NO;
         self.mDatePicker.translatesAutoresizingMaskIntoConstraints = NO;
-        [_mContenView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[toolBar]|" options:0 metrics:@{} views:@{@"toolBar":self.mToolBar}]];
+        [_mContenView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[toolBar]-0-|" options:0 metrics:@{} views:@{@"toolBar":self.mToolBar}]];
         
-        [_mContenView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[datePicker]|" options:0 metrics:@{} views:@{@"datePicker":self.mDatePicker}]];
+        [_mContenView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[datePicker]-0-|" options:0 metrics:@{} views:@{@"datePicker":self.mDatePicker}]];
         
         [_mContenView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[toolBar(toolHeight)]-0-[datePicker(dateHeight)]-0-|" options:0 metrics:@{@"toolHeight":@(MW_ToolBarHeight),@"dateHeight":@(MW_DatePickerHeight)} views:@{@"datePicker":self.mDatePicker,@"toolBar":self.mToolBar}]];
+        _mContenView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     [_mContenView layoutIfNeeded];
    
@@ -945,6 +986,10 @@ NSInteger const MW_ToolBarHeight = 40;
 + (UIViewController *)gxg_currentViewController{
     UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     return [self gxg_findCurrentViewController:viewController];
+}
+
++ (BOOL)isIphoneX{
+    return ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO);
 }
 
 
@@ -1146,6 +1191,8 @@ NSInteger const MW_ToolBarHeight = 40;
     
     [self.mDatePicker setBackgroundColor:datePickerBackgroundColor];
 }
+
+
 
 @end
 

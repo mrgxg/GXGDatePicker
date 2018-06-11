@@ -23,6 +23,7 @@
 		6BC9BAED3EA138DD2526B479 /* Pods_GXGDatePicker_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F6BE3CB8C8C5AB907844E9 /* Pods_GXGDatePicker_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		A20FF1BDD8F95A26B08A30E8 /* Pods_GXGDatePicker_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C14AF84F786D303B14794095 /* Pods_GXGDatePicker_Example.framework */; };
+		FC44968020CE67AE009FCB2F /* CHANGELOG in Resources */ = {isa = PBXBuildFile; fileRef = FC44967F20CE67AD009FCB2F /* CHANGELOG */; };
 		FC4EA16C1E0BD3A10037CEB5 /* GXGDatePickerLanch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC4EA16B1E0BD3A10037CEB5 /* GXGDatePickerLanch.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		A277E7A499A509024D601857 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C14AF84F786D303B14794095 /* Pods_GXGDatePicker_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GXGDatePicker_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4F6BE3CB8C8C5AB907844E9 /* Pods_GXGDatePicker_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GXGDatePicker_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FC44967F20CE67AD009FCB2F /* CHANGELOG */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CHANGELOG; path = ../CHANGELOG; sourceTree = "<group>"; };
 		FC4EA16B1E0BD3A10037CEB5 /* GXGDatePickerLanch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GXGDatePickerLanch.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -178,6 +180,7 @@
 		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
 			isa = PBXGroup;
 			children = (
+				FC44967F20CE67AD009FCB2F /* CHANGELOG */,
 				8B3E802583B98CE9C0417BE9 /* GXGDatePicker.podspec */,
 				9A4CC5BAB950CFDC0F176AA5 /* README.md */,
 				A277E7A499A509024D601857 /* LICENSE */,
@@ -283,6 +286,7 @@
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				FC44968020CE67AE009FCB2F /* CHANGELOG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
