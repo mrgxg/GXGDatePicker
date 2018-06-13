@@ -7,11 +7,10 @@
 
 #import "GXGDatePicker.h"
 
-#define MWDP_MONTH 12
-#define MWDP_HOUR 24
-#define MWDP_MINUTE 60
-
-#define MWDP_Space 6                //datePicker每个column的view之间的距离
+NSInteger const GXG_DP_MONTH = 12;
+NSInteger const GXG_DP_HOUR = 24;
+NSInteger const GXG_DP_MINUTE = 60;
+NSInteger const GXG_DP_Space = 6;   //datePicker每个column的view之间的距离
 
 NSInteger const MW_DatePickerHeight = 216;
 NSInteger const MW_ToolBarHeight = 40;
@@ -152,9 +151,9 @@ NSInteger const MW_ToolBarHeight = 40;
     self.mMinDateHour = 1;
     self.mMinDateMinute = 1;
     
-    self.mMaxMonth = MWDP_MONTH;
-    self.mMaxHour = MWDP_HOUR;
-    self.mMaxMinute = MWDP_MINUTE;
+    self.mMaxMonth = GXG_DP_MONTH;
+    self.mMaxHour = GXG_DP_HOUR;
+    self.mMaxMinute = GXG_DP_MINUTE;
     
     self.mYearArray = [NSMutableArray array];
     self.mMonthArray = [NSMutableArray array];
@@ -164,18 +163,18 @@ NSInteger const MW_ToolBarHeight = 40;
     
     self.mYearCount = self.mMaxYear - self.mMinYear +1;
     
-    for (NSInteger min = 1; min<MWDP_MINUTE ; min++) {
+    for (NSInteger min = 1; min<GXG_DP_MINUTE ; min++) {
         NSString *num = [NSString stringWithFormat:@"%02ld",(long)min];
-        if (min<=MWDP_MONTH) {
+        if (min<=GXG_DP_MONTH) {
             [self.mMonthArray addObject:num];
         }
         if (min<=self.mDayCount) {
             [self.mDayArray addObject:num];
         }
-        if (min<=MWDP_HOUR) {
+        if (min<=GXG_DP_HOUR) {
             [self.mHourArray addObject:num];
         }
-        if (min<=MWDP_MINUTE) {
+        if (min<=GXG_DP_MINUTE) {
             [self.mMinArray addObject:num];
         }
     }
@@ -450,14 +449,14 @@ NSInteger const MW_ToolBarHeight = 40;
         if (self.mYearIndex == (self.mMaxYear - self.mMinYear)){
             self.mMaxMonth = self.mMaxDateMonth;
         }else{
-            self.mMaxMonth = MWDP_MONTH;
+            self.mMaxMonth = GXG_DP_MONTH;
         }
     }else if (self.mYearIndex == (self.mMaxYear - self.mMinYear)){  //最大年
         self.mMaxMonth = self.mMaxDateMonth;
         self.mMinMonth = 1;
     }else{
         self.mMinMonth = 1;
-        self.mMaxMonth = MWDP_MONTH;
+        self.mMaxMonth = GXG_DP_MONTH;
     }
     
     self.mMonthCount = self.mMaxMonth - self.mMinMonth +1;
@@ -493,14 +492,14 @@ NSInteger const MW_ToolBarHeight = 40;
         if ((self.mMonthIndex == (self.mMaxDateMonth - self.mMinDateMonth)) && (self.mYearIndex == (self.mMaxYear - self.mMinYear)) && self.mDayIndex == (self.mMaxDateDay - self.mMinDateDay) ){
             self.mMaxHour = self.mMaxDateHour;
         }else{
-            self.mMaxHour = MWDP_HOUR;
+            self.mMaxHour = GXG_DP_HOUR;
         }
     }else if ((self.mMonthIndex == (self.mMaxDateMonth - self.mMinDateMonth)) && (self.mYearIndex == (self.mMaxYear - self.mMinYear)) && self.mDayIndex == (self.mMaxDateDay - self.mMinDateDay) ){
         self.mMaxHour = self.mMaxDateHour;
         self.mMinHour = 1;
     }else{
         self.mMinHour = 1;
-        self.mMaxHour = MWDP_HOUR;
+        self.mMaxHour = GXG_DP_HOUR;
     }
     
     self.mHourCount = self.mMaxHour - self.mMinHour + 1 ;
@@ -513,14 +512,14 @@ NSInteger const MW_ToolBarHeight = 40;
         if ((self.mMonthIndex == (self.mMaxDateMonth - self.mMinDateMonth)) && (self.mYearIndex == (self.mMaxYear - self.mMinYear)) && self.mDayIndex == (self.mMaxDateDay - self.mMinDateDay)  && self.mHourIndex == (self.mMaxDateHour - self.mMinDateHour)){
             self.mMaxMinute = self.mMaxDateMinute;
         }else{
-            self.mMaxMinute = MWDP_MINUTE;
+            self.mMaxMinute = GXG_DP_MINUTE;
         }
     }else if ((self.mMonthIndex == (self.mMaxDateMonth - self.mMinDateMonth)) && (self.mYearIndex == (self.mMaxYear - self.mMinYear)) && self.mDayIndex == (self.mMaxDateDay - self.mMinDateDay)  && self.mHourIndex == (self.mMaxDateHour - self.mMinDateHour)){
         self.mMaxMinute = self.mMaxDateMinute;
         self.mMinMinute = 1;
     }else{
         self.mMinMinute = 1;
-        self.mMaxMinute = MWDP_MINUTE;
+        self.mMaxMinute = GXG_DP_MINUTE;
     }
     
     self.mMinuteCount = self.mMaxMinute - self.mMinMinute + 1 ;
@@ -543,7 +542,7 @@ NSInteger const MW_ToolBarHeight = 40;
     
     if (self.datePickerMode == GXGDatePickerModeDateAndTime) {
         count = 5;
-        usedWidth = screenWidth - (count-1) * MWDP_Space;
+        usedWidth = screenWidth - (count-1) * GXG_DP_Space;
         CGFloat ratio = 1./count;
         if (component==0) {
             result = usedWidth*ratio * 1.4;
@@ -553,12 +552,12 @@ NSInteger const MW_ToolBarHeight = 40;
         
     }else if (self.datePickerMode == GXGDatePickerModeMonthDayTime){
         count = 4;
-        usedWidth = screenWidth - (count-1) * MWDP_Space;
+        usedWidth = screenWidth - (count-1) * GXG_DP_Space;
         CGFloat ratio = 1./count;
         result = usedWidth*ratio ;
     }else if (self.datePickerMode == GXGDatePickerModeDate){
         count = 4;
-        usedWidth = screenWidth - (count-1) * MWDP_Space;
+        usedWidth = screenWidth - (count-1) * GXG_DP_Space;
         CGFloat ratio = 1./count;
         if (component==0) {
             result = usedWidth*ratio * 1.4;
@@ -567,7 +566,7 @@ NSInteger const MW_ToolBarHeight = 40;
         }
     }else if(self.datePickerMode == GXGDatePickerModeHourMinute) {
         count = 2;
-        usedWidth = screenWidth - (count-1) * MWDP_Space;
+        usedWidth = screenWidth - (count-1) * GXG_DP_Space;
         CGFloat ratio = 1./count;
         result = usedWidth*ratio ;
     }
